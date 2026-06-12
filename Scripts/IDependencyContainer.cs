@@ -10,19 +10,19 @@ namespace UniT.DI
     {
         public bool TryResolve(Type type, [MaybeNullWhen(false)] out object instance);
 
-        public bool TryResolve<T>([MaybeNullWhen(false)] out T instance);
+        public bool TryResolve<T>([MaybeNullWhen(false)] out T instance) where T : notnull;
 
         public object Resolve(Type type);
 
-        public T Resolve<T>();
+        public T Resolve<T>() where T : notnull;
 
         public IEnumerable<object> ResolveAll(Type type);
 
-        public IEnumerable<T> ResolveAll<T>();
+        public IEnumerable<T> ResolveAll<T>() where T : notnull;
 
         public object Instantiate(Type type, params object?[] @params);
 
-        public T Instantiate<T>(params object?[] @params);
+        public T Instantiate<T>(params object?[] @params) where T : notnull;
 
         public GameObject Instantiate(GameObject prefab);
 

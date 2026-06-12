@@ -169,14 +169,16 @@ namespace UniT.DI
 
         private object?[] ResolveParameters(ParameterInfo[] parameters, object?[] @params, string context)
         {
+            var usedParams = new bool[@params.Length];
+
             return parameters.Select(parameter =>
             {
                 var parameterType = parameter.ParameterType;
-                var paramIndex    = @params.FirstIndexOrDefault(parameterType.IsInstanceOfType);
-                if (paramIndex >= 0)
+                for (var i = 0; i < @params.Length; ++i)
                 {
-                    var param = @params[paramIndex];
-                    @params[paramIndex] = null;
+                    var param = @params[i];
+                    if (usedParams[i] || (param is not null && !parameterType.IsInstanceOfType(param))) continue;
+                    usedParams[i] = true;
                     return param;
                 }
                 switch (parameterType)
@@ -197,7 +199,7 @@ namespace UniT.DI
                     {
                         if (this.TryGet(parameterType, out var instance)) return instance;
                         if (parameter.HasDefaultValue) return parameter.DefaultValue;
-                        throw new($"Cannot resolve {parameterType.Name} for {parameter.Name} while {context}");
+                        throw new InvalidOperationException($"Cannot resolve {parameterType.Name} for {parameter.Name} while {context}");
                     }
                 }
             }).ToArray();
@@ -219,22 +221,22 @@ namespace UniT.DI
         public void Add<T>(T instance) where T : notnull => this.Add(typeof(T), instance);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Add<T>(params object?[] @params) => this.Add(typeof(T), @params);
+        public void Add<T>(params object?[] @params) where T : notnull => this.Add(typeof(T), @params);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void AddInterfaces<T>(params object?[] @params) => this.AddInterfaces(typeof(T), @params);
+        public void AddInterfaces<T>(params object?[] @params) where T : notnull => this.AddInterfaces(typeof(T), @params);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void AddInterfacesAndSelf<T>(params object?[] @params) => this.AddInterfacesAndSelf(typeof(T), @params);
+        public void AddInterfacesAndSelf<T>(params object?[] @params) where T : notnull => this.AddInterfacesAndSelf(typeof(T), @params);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Contains<T>() => this.Contains(typeof(T));
+        public bool Contains<T>() where T : notnull => this.Contains(typeof(T));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T Get<T>() => (T)this.Get(typeof(T));
+        public T Get<T>() where T : notnull => (T)this.Get(typeof(T));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGet<T>([MaybeNullWhen(false)] out T instance)
+        public bool TryGet<T>([MaybeNullWhen(false)] out T instance) where T : notnull
         {
             if (this.TryGet(typeof(T), out var obj))
             {
@@ -246,10 +248,10 @@ namespace UniT.DI
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<T> GetAll<T>() => this.GetAll(typeof(T)).Cast<T>();
+        public IEnumerable<T> GetAll<T>() where T : notnull => this.GetAll(typeof(T)).Cast<T>();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T Instantiate<T>(params object?[] @params) => (T)this.Instantiate(typeof(T), @params);
+        public T Instantiate<T>(params object?[] @params) where T : notnull => (T)this.Instantiate(typeof(T), @params);
 
         #endregion
 
