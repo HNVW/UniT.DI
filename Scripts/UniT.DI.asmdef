@@ -1,3 +1,4 @@
 {
-  "name": "UniT.DI"
+  "name": "UniT.DI",
+  "overrideReferences": true
 }

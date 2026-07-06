@@ -1,8 +1,12 @@
 {
   "name": "UniT.DI.Zenject",
+  "overrideReferences": true,
   "references": [
     "UniT.DI",
     "Zenject"
+  ],
+  "precompiledReferences": [
+    "Zenject-usage.dll"
   ],
   "versionDefines": [
     {

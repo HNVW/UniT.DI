@@ -1,5 +1,6 @@
 {
   "name": "UniT.DI.VContainer",
+  "overrideReferences": true,
   "references": [
     "UniT.DI",
     "UniT.Extensions.VContainer",
