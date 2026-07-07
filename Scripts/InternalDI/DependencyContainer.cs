@@ -174,7 +174,7 @@ namespace UniT.DI
                 for (var i = 0; i < @params.Length; ++i)
                 {
                     var param = @params[i];
-                    if (isParamUsed[i] || (param is not null && !parameterType.IsInstanceOfType(param))) continue;
+                    if (isParamUsed[i] || param is not null && !parameterType.IsInstanceOfType(param)) continue;
                     isParamUsed[i] = true;
                     return param;
                 }
@@ -208,7 +208,7 @@ namespace UniT.DI
         private Array ResolveArray(Type type)
         {
             var instances = this.GetAll(type).ToArray();
-            var array     = Array.CreateInstance(type, instances.Length);
+            var array = Array.CreateInstance(type, instances.Length);
             instances.CopyTo(array, 0);
             return array;
         }
