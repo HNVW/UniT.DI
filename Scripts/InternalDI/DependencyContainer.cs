@@ -1,5 +1,5 @@
 #nullable enable
-namespace UniT.DI
+namespace UniT.InternalDI
 {
     using System;
     using System.Collections.Generic;
@@ -9,7 +9,8 @@ namespace UniT.DI
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-    using UniT.Extensions;
+    using DI;
+    using Extensions;
     using UnityEngine;
     using Object = UnityEngine.Object;
 

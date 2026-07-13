@@ -7,10 +7,11 @@ namespace VContainer
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using UniT.DI;
+    using UniT.Extensions;
+    using Unity;
     using UnityEngine;
-    using VContainer.Unity;
 
-    public static class VContainerExtensions
+    public static class DependencyContainerVContainer
     {
         public static void RegisterDependencyContainer(this IContainerBuilder builder)
         {

@@ -5,11 +5,11 @@ namespace Zenject
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Internal;
     using UniT.DI;
     using UnityEngine;
-    using Zenject.Internal;
 
-    public static class ZenjectExtensions
+    public static class DependencyContainerZenject
     {
         public static void BindDependencyContainer(this DiContainer container)
         {
