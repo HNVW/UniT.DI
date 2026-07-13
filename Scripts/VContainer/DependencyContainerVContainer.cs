@@ -1,15 +1,15 @@
 #nullable enable
-namespace VContainer
+namespace UniT.DI
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using UniT.DI;
-    using UniT.Extensions;
-    using Unity;
+    using Extensions;
     using UnityEngine;
+    using VContainer;
+    using VContainer.Unity;
 
     public static class DependencyContainerVContainer
     {

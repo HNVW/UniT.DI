@@ -1,13 +1,13 @@
 #nullable enable
-namespace Zenject
+namespace UniT.DI
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using Internal;
-    using UniT.DI;
     using UnityEngine;
+    using Zenject;
+    using Zenject.Internal;
 
     public static class DependencyContainerZenject
     {
