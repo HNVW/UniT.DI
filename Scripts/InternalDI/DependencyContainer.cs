@@ -5,10 +5,8 @@ namespace UniT.InternalDI
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics.CodeAnalysis;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
     using DI;
     using Extensions;
     using UnityEngine;
@@ -60,13 +58,11 @@ namespace UniT.InternalDI
             this.cache.GetOrAdd(type).Add(instance);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Add(object instance)
         {
             this.Add(instance.GetType(), instance);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddInterfaces(object instance)
         {
             foreach (var @interface in instance.GetType().GetInterfaces())
@@ -75,7 +71,6 @@ namespace UniT.InternalDI
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddInterfacesAndSelf(object instance)
         {
             foreach (var @interface in instance.GetType().GetInterfaces().Prepend(instance.GetType()))
@@ -88,19 +83,16 @@ namespace UniT.InternalDI
 
         #region Auto Add
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Add(Type type, params object?[] @params)
         {
             this.Add(type, this.Instantiate(type, @params));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddInterfaces(Type type, params object?[] @params)
         {
             this.AddInterfaces(this.Instantiate(type, @params));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddInterfacesAndSelf(Type type, params object?[] @params)
         {
             this.AddInterfacesAndSelf(this.Instantiate(type, @params));
@@ -218,25 +210,18 @@ namespace UniT.InternalDI
 
         #region Generic
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Add<T>(T instance) where T : notnull => this.Add(typeof(T), instance);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Add<T>(params object?[] @params) where T : notnull => this.Add(typeof(T), @params);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddInterfaces<T>(params object?[] @params) where T : notnull => this.AddInterfaces(typeof(T), @params);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddInterfacesAndSelf<T>(params object?[] @params) where T : notnull => this.AddInterfacesAndSelf(typeof(T), @params);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Contains<T>() where T : notnull => this.Contains(typeof(T));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Get<T>() where T : notnull => (T)this.Get(typeof(T));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGet<T>([MaybeNullWhen(false)] out T instance) where T : notnull
         {
             if (this.TryGet(typeof(T), out var obj))
@@ -248,108 +233,89 @@ namespace UniT.InternalDI
             return false;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IReadOnlyList<T> GetAll<T>() where T : notnull => this.GetAll(typeof(T)).Cast<T>().ToArray();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Instantiate<T>(params object?[] @params) where T : notnull => (T)this.Instantiate(typeof(T), @params);
 
         #endregion
 
         #region Add From
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddFromResource<T>(string path) where T : Object
         {
             this.Add(LoadResource<T>(path));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddInterfacesFromResource<T>(string path) where T : Object
         {
             this.AddInterfaces(LoadResource<T>(path));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddInterfacesAndSelfFromResource<T>(string path) where T : Object
         {
             this.AddInterfacesAndSelf(LoadResource<T>(path));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddFromComponentInNewPrefabResource<T>(string path) where T : Component
         {
             this.Add(Object.Instantiate(LoadResource<T>(path)));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddInterfacesFromComponentInNewPrefabResource<T>(string path) where T : Component
         {
             this.AddInterfaces(Object.Instantiate(LoadResource<T>(path)));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddInterfacesAndSelfFromComponentInNewPrefabResource<T>(string path) where T : Component
         {
             this.AddInterfacesAndSelf(Object.Instantiate(LoadResource<T>(path)));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddFromComponentInNewPrefab<T>(T prefab) where T : Component
         {
             this.Add(Object.Instantiate(prefab));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddInterfacesFromComponentInNewPrefab<T>(T prefab) where T : Component
         {
             this.AddInterfaces(Object.Instantiate(prefab));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddInterfacesAndSelfFromComponentInNewPrefab<T>(T prefab) where T : Component
         {
             this.AddInterfacesAndSelf(Object.Instantiate(prefab));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddFromComponentInHierarchy<T>() where T : Component
         {
             this.Add(Object.FindObjectsByType<T>(FindObjectsSortMode.None).Single());
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddInterfacesFromComponentInHierarchy<T>() where T : Component
         {
             this.AddInterfaces(Object.FindObjectsByType<T>(FindObjectsSortMode.None).Single());
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddInterfacesAndSelfFromComponentInHierarchy<T>() where T : Component
         {
             this.AddInterfacesAndSelf(Object.FindObjectsByType<T>(FindObjectsSortMode.None).Single());
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddAllFromComponentInHierarchy<T>() where T : Component
         {
             Object.FindObjectsByType<T>(FindObjectsSortMode.None).ForEach(this.Add);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddAllInterfacesFromComponentInHierarchy<T>() where T : Component
         {
             Object.FindObjectsByType<T>(FindObjectsSortMode.None).ForEach(this.AddInterfaces);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddAllInterfacesAndSelfFromComponentInHierarchy<T>() where T : Component
         {
             Object.FindObjectsByType<T>(FindObjectsSortMode.None).ForEach(this.AddInterfacesAndSelf);
         }
 
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static T LoadResource<T>(string path) where T : Object
         {
             return Resources.Load<T>(path).NullIfDestroyed() ?? throw new KeyNotFoundException($"{path} not found in Resources");
