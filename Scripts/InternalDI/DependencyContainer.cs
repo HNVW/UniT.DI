@@ -114,7 +114,7 @@ namespace UniT.InternalDI
 
         public bool TryGet(Type type, [MaybeNullWhen(false)] out object instance)
         {
-            if (this.cache.GetOrDefault(type)?.SingleOrDefault() is { } obj)
+            if (this.cache.GetValueOrDefault(type)?.SingleOrDefault() is { } obj)
             {
                 instance = obj;
                 return true;
@@ -125,7 +125,7 @@ namespace UniT.InternalDI
 
         public IReadOnlyList<object> GetAll(Type type)
         {
-            return this.cache.GetOrDefault(type) ?? (IReadOnlyList<object>)Array.Empty<object>();
+            return this.cache.GetValueOrDefault(type) ?? (IReadOnlyList<object>)Array.Empty<object>();
         }
 
         #endregion
@@ -195,7 +195,7 @@ namespace UniT.InternalDI
                 if (parameter.HasDefaultValue) return parameter.DefaultValue;
 
                 throw new InvalidOperationException($"Cannot resolve {parameterType.Name} for {parameter.Name} while {context}");
-            }, (@this: this, @params, context, isParamUsed: new bool[@params.Length])).ToArray();
+            }, (this, @params, context, new bool[@params.Length])).ToArray();
         }
 
         private Array ResolveArray(Type type)
